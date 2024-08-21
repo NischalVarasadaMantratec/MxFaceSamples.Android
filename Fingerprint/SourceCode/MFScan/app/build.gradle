@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdk 34
+    defaultConfig {
+        applicationId "com.mantra.mfscansample"
+        minSdkVersion 21
+        //noinspection EditedTargetSdkVersion
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0.0.0"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias project.hasProperty("keyAlias") ? project["keyAlias"] : ""
+            keyPassword project.hasProperty("keyPass") ? project["keyPass"] : ""
+            storeFile project.hasProperty("storeFilePath") ? file(project["storeFilePath"]) : null
+            storePassword project.hasProperty("storePass") ? project["storePass"] : ""
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    defaultConfig {
+        multiDexEnabled true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment:2.7.7'
+    implementation 'androidx.navigation:navigation-ui:2.7.7'
+    implementation files('libs/MFScan.aar')
+    implementation 'com.intuit.sdp:sdp-android:1.1.0'
+    implementation 'com.intuit.ssp:ssp-android:1.1.0'
+}
